@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+    <title>PRIVATE CHAT</title>
+  </head>
+  <body>
+    <div class="heading">
+      <h1>
+        PRIVATE CHAT APP<br /><span>
+          By ADJARO LORD OGAGA
+        </span>
+      </h1>
+    </div>
+    <p id="typingMsg"></p>
+    <ul id="messages">
+    </ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function() {
+        var socket = io();
+        $("form").submit(function(e) {
+          e.preventDefault(); // prevents page reloading
+          
+          if ($("#m").val() === "" || $("#m").val() === "%20") {
+            alert("you cannot enter an empty message");
+            socket.end();
+          }
+          socket.emit("chat message", $("#m").val());
+          $("#m").val("");
+          $("#typingMsg").html("");
+          return false;
+        });
+        socket.on("chat message", function(msg) {
+          let typingmsg ;
+          let state = false;
+          $("form").on("keydown", function() {
+            if (!state) {
+               typingmsg = $("#typingMsg").html("user is typing...");
+              state = true;
+              $("#messages").append(typingmsg);
+            }
+          });
+          $("form").on("keyup", function() {
+            fired = false;
+        
+            
+            
+          });
+          $("#messages").append($("<li>").text(msg));
+          
+        });
+      });
+    </script>
+  </body>
+</html>
