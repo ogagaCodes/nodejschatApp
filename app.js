@@ -23,13 +23,10 @@ io.on('connection', function(socket){
     })
   });
 
-  if(`development`) {
-    http.listen(4000, function(){
-  console.log('server listening on port 3000');
-});
-  } else{
+ 
+  
     http.listen(process.env.PORT, process.env.IP);
-  }
+  
 /*http.listen(4000, function(){
   console.log('server listening on port 3000');
 }); */
