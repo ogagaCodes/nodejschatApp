@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="/stylesheets/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>PRIVATE CHAT</title>
   </head>
   <body>
@@ -13,14 +14,41 @@
       </h1>
     </div>
     <p id="typingMsg"></p>
+    <div class="images"></div>
     <ul id="messages">
     </ul>
     <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input id="m" autocomplete="off" />
+<!--<input class="img" type="file" name="image" id="image" multiple> -->
+      <button class="sendMessage">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+
+        function getName() {
+            return prompt("please enter your name");
+        }
+     let socket, name ='';
+     $(document).ready(function(){
+       socket = io();
+       socket.on('connect', ()=> {
+         name = getName();
+         socket.emit('join', name);
+       })
+     });
+        // to handle users joining the chat
+     function userJoining(name) {
+       $("#messages").append(`
+             <li>${name}: joined</li>
+           `)
+     }; 
+     $(document).ready(function(){
+       socket.on('join', userJoining);
+     })
+
+
+    // to handle submition of forms
       $(function() {
         var socket = io();
         $("form").submit(function(e) {
@@ -52,6 +80,7 @@
             
           });
           $("#messages").append($("<li>").text(msg));
+           
           
         });
       });

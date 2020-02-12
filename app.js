@@ -14,8 +14,16 @@ io.on('connection', function(socket){
   console.log("client is connected");
     socket.on('chat message', function(msg){
       //this.socket.write("welcome new client");
-      io.emit('chat message', msg);
+      socket.broadcast.emit('chat message', msg);
     });
+
+    socket.on('join', name => {
+      socket.name = name;
+      socket.broadcast.emit('join', name);
+    })
   });
 
 http.listen(process.env.PORT, process.env.IP);
+/*http.listen(4000, function(){
+  console.log('server listening on port 3000');
+}); */
